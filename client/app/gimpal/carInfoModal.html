@@ -1,0 +1,48 @@
+<div class="modal-header">
+    <h3 class="modal-title">
+        Details
+    </h3>
+    <hr>
+    <div class="modal-body">
+        <h4>Driver</h4>
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Address</th>
+                    <th>Phone Number</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{carInfo.driver.name}}</td>
+                    <td>{{carInfo.driver.address}}</td>
+                    <td>{{carInfo.driver.phone}}</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h4>Riders</h4>
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Address</th>
+                    <th>Phone Number</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="rider in carInfo.riders">
+                    <td>{{rider.name}}</td>
+                    <td>{{rider.address}}</td>
+                    <td>{{rider.phone}}</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <em>{{carInfo.riders.length + 1}} out of {{carInfo.seats}} seats occupied</em>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-primary" ng-click="ok()">Dismiss</button>
+    </div>
+</div>
