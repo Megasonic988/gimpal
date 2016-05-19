@@ -97,7 +97,7 @@
             var modalInstance = this.$uibModal.open({
                 animation: true,
                 templateUrl: 'app/gimpal/carInfoModal.html',
-                controller: 'modalCtr',
+                controller: 'carInfoModalCtr',
                 size: 'lg',
                 resolve: {
                     carInfo: () => {
@@ -175,6 +175,16 @@
             seats: 5,
             organization: 'E3C'
         };
+
+        var modalInstance = this.$uibModal.open({
+            animation: true,
+            templateUrl: 'app/gimpal/carCreationModal.html',
+            controller: 'carCreationModalCtr',
+            size: 'lg',
+        });
+
+        modalInstance.result.then(function() {}, function(reason) {console.log(reason);});
+
         this.$http.post('/api/cars', newCar)
         .then((response) => {
             this.userIsDriver = true;

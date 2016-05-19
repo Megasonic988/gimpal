@@ -14,5 +14,5 @@
   }
 
   angular.module('gimpalApp')
-    .controller('modalCtr', CarInfoModalController);
+    .controller('carInfoModalCtr', CarInfoModalController);
 })();
