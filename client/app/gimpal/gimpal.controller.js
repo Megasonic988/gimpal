@@ -32,8 +32,6 @@
          * if I wanted to use $index in the html file.
          */
         $scope.addSelfToCar = (carIndex) => {
-            // update data
-            this.getCars();
 
             var car = this.cars[carIndex];
 
