@@ -21,12 +21,16 @@ function respondWithResult(res, statusCode) {
   };
 }
 
-function saveUpdates(updates) {
+function saveUpdates(updates, res) {
   return function(entity) {
     var updated = _.assign(entity, updates);
     console.log(updated);
     if (updated.riderIds) {
         updated.markModified('riderIds'); //MONGOOSE CANNOT DETECT CHANGES IN ARRAY, MUST FORCE "MARKMODIFIED"
+        console.log(updated.riderIds.length);
+        if (updated.riderIds.length > updated.seats) {
+            return res.status(500).json({error: 'No seats left in car'});
+        }
     }
     return updated.save()
       .then(updated => {
@@ -92,7 +96,7 @@ export function update(req, res) {
   }
   return Car.findById(req.params.id).exec()
     .then(handleEntityNotFound(res))
-    .then(saveUpdates(req.body))
+    .then(saveUpdates(req.body, res))
     .then(respondWithResult(res))
     .catch(handleError(res));
 }

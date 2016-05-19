@@ -33,29 +33,31 @@
          */
         $scope.addSelfToCar = (carIndex) => {
 
-            var car = this.cars[carIndex];
+            var car_copy = angular.copy(this.cars[carIndex]);
 
-            if (car.riderIds.length >= car.seats) {
-                console.log('Error: car is already at max capacity');
-                return;
-            }
+            // if (car.riderIds.length >= car.seats) {
+            //     console.log('Error: car is already at max capacity');
+            //     return;
+            // }
 
             // prevent ourselves from joining car repeatedly
-            if (this.myCarId === car._id) {
+            if (this.myCarId === car_copy._id) {
                 console.log('Error: attempting to re-join car already joined');
                 return;
             }
 
-            this.myCarId = car._id;
-
+            // do not set class properties until success callback
+            var myCarId = car_copy._id;
             var myInfo = this.me._id; // add myself to riderIds array
-            car.riderIds.push(myInfo);
+            car_copy.riderIds.push(myInfo);
 
-            this.$http.put('/api/cars/' + car._id, car)
+            this.$http.put('/api/cars/' + car_copy._id, car_copy)
             .then((response) => {
                 console.log('added self to car');
+                this.myCarId = car_copy._id;
                 this.getCars(); //update __v version number in car object by re-fetching from server
             }, (error) => {
+                // TO DO: add modal popup for error message
                 console.log(error);
             });
         }
