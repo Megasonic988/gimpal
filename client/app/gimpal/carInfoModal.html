@@ -11,6 +11,7 @@
                     <th>Name</th>
                     <th>Address</th>
                     <th>Phone Number</th>
+                    <th>Estimated Departure</th>
                 </tr>
             </thead>
             <tbody>
@@ -18,10 +19,15 @@
                     <td>{{carInfo.driver.name}}</td>
                     <td>{{carInfo.driver.address}}</td>
                     <td>{{carInfo.driver.phone}}</td>
+                    <td>{{carInfo.departTime | date : 'shortTime'}}
                 </tr>
             </tbody>
         </table>
-
+        <div ng-show="carInfo.comments">
+            <h5><strong>Comments:</strong></h5>
+            {{carInfo.comments}}
+        </div>
+        <hr>
         <h4>Riders</h4>
         <table class="table table-bordered table-striped">
             <thead>

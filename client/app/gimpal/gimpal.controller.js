@@ -91,7 +91,9 @@
             var carInfo = {
                 driver: this.findUserForId(car.driverId),
                 riders: car.riderIds.map(this.findUserForId.bind(this)),
-                seats: car.seats
+                seats: car.seats,
+                comments: car.comments,
+                departTime: car.departTime
             };
 
             var modalInstance = this.$uibModal.open({
@@ -168,13 +170,6 @@
      * the information.
      */
     createCar() {
-        var newCar = {
-            driverId: this.me._id,
-            active: true,
-            riderIds: [],
-            seats: 5,
-            organization: 'E3C'
-        };
 
         var modalInstance = this.$uibModal.open({
             animation: true,
@@ -183,14 +178,29 @@
             size: 'lg',
         });
 
-        modalInstance.result.then(function() {}, function(reason) {console.log(reason);});
+        modalInstance.result.then( (formData) => {
 
-        this.$http.post('/api/cars', newCar)
-        .then((response) => {
-            this.userIsDriver = true;
-            this.getCars();
-        }, (error) => {
-            console.log(error);
+            var newCar = {
+                driverId: this.me._id,
+                active: true,
+                riderIds: [],
+                seats: formData.numSeats,
+                organization: this.me.organization,
+                departTime: formData.departTime,
+                comments: formData.comments
+            };
+
+            this.$http.post('/api/cars', newCar)
+            .then((response) => {
+                this.userIsDriver = true;
+                this.getCars();
+            }, (error) => {
+                console.log(error);
+            });
+
+        }, function(reason) {
+            // quit
+            console.log(reason);
         });
     }
 

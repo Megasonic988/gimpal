@@ -8,7 +8,9 @@ var CarSchema = new mongoose.Schema({
   riderIds: [Schema.Types.ObjectId],
   active: Boolean,
   seats: Number,
-  organization: String
+  organization: String,
+  departTime: Date,
+  comments: String
 });
 
 export default mongoose.model('Car', CarSchema);

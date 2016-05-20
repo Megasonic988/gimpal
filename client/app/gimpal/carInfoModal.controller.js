@@ -5,7 +5,7 @@
       constructor($scope, $uibModalInstance, carInfo) {
 
           $scope.carInfo = carInfo;
-
+          console.log(carInfo);
           $scope.ok = function() {
               $uibModalInstance.dismiss('close');
           }
