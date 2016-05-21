@@ -127,6 +127,7 @@
      * Get the array of users from the server.
      */
     getUsers() {
+        console.log('getting users');
         this.$http.get('/api/users')
         .then((response) => {
             this.users = response.data;
@@ -141,11 +142,20 @@
      * this.myCarId correspondingly.
      */
     getCars() {
+        console.log('getting cars');
         this.$http.get('/api/cars')
         .then((response) => {
+            console.log('response received');
+            console.log(response);
             this.cars = response.data;
 
-            // check if I am in any of these cars right now
+            // if there are no cars, then I cannot be a driver or a rider
+            if (this.cars.length === 0) {
+                this.userIsDriver = false;
+                this.myCarId = null;
+            }
+
+            // if there are cars, check if I am in any of these cars right now
             for (var i = 0; i < this.cars.length; i++) {
                 var car = this.cars[i];
 
@@ -167,9 +177,10 @@
                 }
 
                 this.myCarId = null; // I am not a rider
-
-                this.lastUpdated = (new Date()).getTime();
             }
+
+            console.log('updated time');
+            this.lastUpdated = (new Date()).getTime();
         }, (error) => {
             console.log(error);
         });
