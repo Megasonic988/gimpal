@@ -78,15 +78,30 @@
         $scope.deleteCar = (carIndex) => {
             var car = this.cars[carIndex];
 
-            this.$http.delete('/api/cars/' + car._id)
-            .then((response) => {
-                console.log('deleted car');
-                console.log(response);
-                this.getCars(); //update __v version number in car object by re-fetching from server
-                // NOTE: if you do not refetch data from server after modifying a
-                // schema, you may encounter a VersionError
-            }, (error) => {
-                console.log(error);
+            var modalInstance = this.$uibModal.open({
+                animation: true,
+                templateUrl: 'app/gimpal/genericModal.html',
+                controller: 'genericModalCtr',
+                size: 'md',
+                resolve: {
+                    Title: () => { return 'Delete Confirmation'; },
+                    Body: () => { return 'Your car will be removed from the list. This cannot be undone. Do you wish to continue?'; }
+                }
+            });
+
+            modalInstance.result.then(() => {
+                this.$http.delete('/api/cars/' + car._id)
+                .then((response) => {
+                    console.log('deleted car');
+                    console.log(response);
+                    this.getCars(); //update __v version number in car object by re-fetching from server
+                    // NOTE: if you do not refetch data from server after modifying a
+                    // schema, you may encounter a VersionError
+                }, (error) => {
+                    console.log(error);
+                });
+            }, (reason) => {
+                console.log(reason);
             });
         }
 
