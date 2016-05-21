@@ -22,8 +22,18 @@
         this.getCars();
 
         // poll server to refresh data
-        setInterval(this.getUsers.bind(this), this.POLL_TIME_MILLIS);
-        setInterval(this.getCars.bind(this), this.POLL_TIME_MILLIS);
+        this.usersPoll = setInterval(this.getUsers.bind(this), this.POLL_TIME_MILLIS);
+        this.carsPoll = setInterval(this.getCars.bind(this), this.POLL_TIME_MILLIS);
+
+        $scope.$on('$destroy', () => {
+            if (this.usersPoll) {
+                clearInterval(this.usersPoll);
+            }
+            if (this.carsPoll) {
+                clearInterval(this.carsPoll);
+            }
+        });
+
 
         /**
          * Add my id to the riderIds array in the specified car. The "carIndex"

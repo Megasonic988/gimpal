@@ -1,0 +1,37 @@
+<div class="modal-header">
+    <h3 class="modal-title">
+        Driver Information
+    </h3>
+    <hr>
+    <div class="modal-body">
+        <form>
+            <div class="form-group">
+                <label for="numSeats">Number of Seats</label><br>
+                <div id="numSeats" class="btn-group" uib-dropdown required>
+                    <button type="button" class="btn btn-primary" uib-dropdown-toggle>
+                        {{ form.numSeats || 'Choose' }} <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" uib-dropdown-menu role="menu">
+                        <li role="menuitem" ng-repeat="num in possibleSeats">
+                            <a href="#" ng-model="form.numSeats" uib-btn-radio="{{num}}">{{num}}</a>
+                        </li>
+                    </ul>
+                </div>
+                <p class="text-danger" ng-show="buttonPressed && !form.numSeats">Please choose the number of seats in the car.</p>
+            </div>
+            <div class="form-group">
+                <label for="departTime">Estimated Time of Departure</label>
+                <uib-timepicker ng-model="form.departTime" hour-step="1" minute-step="5"></uib-timepicker>
+                <p class="text-danger" ng-show="buttonPressed && !form.departTime">Please choose your estimated departure time.</p>
+            </div>
+            <div class="form-group">
+                <label for="comments">Extra Comments</label>
+                <input id="comments" ng-model="form.comments" class="form-control">
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-warning" ng-click="cancel()">Cancel</button>
+        <button type="button" class="btn btn-primary" ng-click="createCar()">Create</button>
+    </div>
+</div>

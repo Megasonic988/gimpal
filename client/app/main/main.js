@@ -5,7 +5,6 @@ angular.module('gimpalApp')
     $stateProvider
       .state('main', {
         url: '/',
-        template: '<main></main>',
-        authenticate: true
+        template: '<main></main>'
       });
   });

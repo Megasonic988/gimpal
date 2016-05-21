@@ -4,10 +4,12 @@
 
 class MainController {
 
-  constructor($http, $scope, socket) {
+  constructor($http, $scope, socket, Auth) {
     this.$http = $http;
     this.socket = socket;
     this.awesomeThings = [];
+
+    this.currentUser = Auth.getCurrentUser();
 
     $scope.$on('$destroy', function() {
       socket.unsyncUpdates('thing');
@@ -18,7 +20,7 @@ class MainController {
     }, function(newVal, oldVal) {
 
         console.log(newVal);
-        
+
     }, _.isEqual);
   }
 

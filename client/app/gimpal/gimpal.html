@@ -1,6 +1,6 @@
-<div class="container" ng-cloak>
+<div class="container" ng-cloak ng-show="ctr.me.name">
   <div class="row" ng-repeat="car in ctr.cars">
-    <div class="col-sm-6 col-sm-offset-3">
+    <div class="col-md-6 col-md-offset-3 col-sm-10 col-sm-offset-1 col-xs-12">
       <div class="panel panel-default" ng-class="{'panel-primary' : (ctr.userIsDriver && ctr.myCarId === car._id), 'panel-success' : (!ctr.userIsDriver && ctr.myCarId === car._id)}">
         <div class="panel-heading">
           <h3 class="panel-title pull-left">{{ctr.findUserForId(car.driverId).name.split(' ')[0]}}'s Ride</h3>
@@ -13,22 +13,22 @@
         <div class="panel-body">
           <div class="container-fluid">
             <div class="row">
-              <div class="col-sm-4">
+              <div class="col-xs-4">
                 Driver Name:
                 <br> {{ctr.findUserForId(car.driverId).name}}
               </div>
-              <div class="col-sm-4">
+              <div class="col-xs-4">
                 Address:
                 <br> {{ctr.findUserForId(car.driverId).address}}
               </div>
-              <div class="col-sm-4">
+              <div class="col-xs-4">
                 Phone:
                 <br> {{ctr.findUserForId(car.driverId).phone}}
               </div>
             </div>
             <hr>
             <div class="row">
-              <div class="col-sm-8">
+              <div class="col-xs-8">
                 Passengers:
                 <br>
                 <b ng-repeat="riderId in car.riderIds">
@@ -36,7 +36,7 @@
                 </b>
                 <b ng-show="car.riderIds.length === 0">None</b>
               </div>
-              <div class="col-sm-4">
+              <div class="col-xs-4">
                 <button type="button" class="btn btn-success" ng-click="addSelfToCar($index)" ng-hide="ctr.myCarId">
                   Join
                 </button>
@@ -56,13 +56,13 @@
     </div>
   </div>
   <div class="row" ng-hide="ctr.myCarId">
-    <div class="col-sm-6 col-sm-offset-3">
+    <div class="col-md-6 col-md-offset-3 col-sm-10 col-sm-offset-1 col-xs-12">
       <div class="panel panel-default">
         <div class="panel-heading">Be a Driver</div>
         <div class="panel-body">
           <div class="container-fluid">
             <div class="row">
-              <div class="col-sm-4 col-sm-offset-4 text-center">
+              <div class="col-xs-4 col-xs-offset-4 text-center">
                 <button type="button" class="btn btn-primary" ng-click="ctr.createCar()">Create Car</button>
               </div>
             </div>
