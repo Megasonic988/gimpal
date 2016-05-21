@@ -94,7 +94,7 @@
          * Present a modal view to give user extra information about the people
          * riding in the car.
          */
-        $scope.openCarInfoModal= (carIndex) => {
+        $scope.openCarInfoModal = (carIndex) => {
             var car = this.cars[carIndex];
 
             // Massage data for the modal view so it can focus on presentation
@@ -121,6 +121,24 @@
             modalInstance.result.then(function() {}, function(reason) {console.log(reason);});
         }
 
+        /**
+         * Sets car.active to false, stopping others from joining the car
+         */
+        $scope.startCar = (carIndex) => {
+
+            var car_copy = angular.copy(this.cars[carIndex]);
+            car_copy.active = false;
+
+            this.$http.put('/api/cars/' + car_copy._id, car_copy)
+            .then((response) => {
+                console.log('inactivated car');
+                this.getCars(); //update __v version number in car object by re-fetching from server
+            }, (error) => {
+                // TO DO: add modal popup for error message
+                console.log(error);
+            });
+        }
+
     }
 
     /**
@@ -145,8 +163,9 @@
         console.log('getting cars');
         this.$http.get('/api/cars')
         .then((response) => {
-            console.log('response received');
-            console.log(response);
+            console.log('updated time');
+            this.lastUpdated = (new Date()).getTime();
+
             this.cars = response.data;
 
             // if there are no cars, then I cannot be a driver or a rider
@@ -179,8 +198,6 @@
                 this.myCarId = null; // I am not a rider
             }
 
-            console.log('updated time');
-            this.lastUpdated = (new Date()).getTime();
         }, (error) => {
             console.log(error);
         });
