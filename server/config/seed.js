@@ -101,7 +101,9 @@ function seedCars(user) {
             active: true,
             riderIds: [],
             seats: 5,
-            organization: 'E3C'
+            organization: 'E3C',
+            departTime: (new Date()).getTime(),
+            comments: ''
           })
           .then(() => {
             console.log('finished populating cars');

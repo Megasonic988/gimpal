@@ -4,7 +4,7 @@
     </h3>
     <hr>
     <div class="modal-body">
-        {{body}}
+        <p ng-bind-html="body"></p>
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-warning" ng-click="cancel()">Cancel</button>

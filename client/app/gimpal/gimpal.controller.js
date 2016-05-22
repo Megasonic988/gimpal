@@ -5,10 +5,11 @@
 
     POLL_TIME_MILLIS = 5000;
 
-    constructor($scope, $http, Auth, $uibModal) {
+    constructor($scope, $http, Auth, $uibModal, $filter) {
 
         this.$http = $http;
         this.$uibModal = $uibModal;
+        this.$filter = $filter;
 
         this.users = [];
         this.me = Auth.getCurrentUser(); // get information of current user
@@ -45,30 +46,50 @@
 
             var car_copy = angular.copy(this.cars[carIndex]);
 
-            // if (car.riderIds.length >= car.seats) {
-            //     console.log('Error: car is already at max capacity');
-            //     return;
-            // }
+            var driverComments = car_copy.comments ?  '<strong>Driver Comments:</strong> ' + car_copy.comments : '';
+            var joinCarModalString = 'Do you wish to join ' + this.findUserForId(car_copy.driverId).name + '\'s car?<br>' +
+            '<strong>Estimated Departure Time:</strong> ' + this.$filter('date')(car_copy.departTime, 'shortTime') + '<br>' +
+            driverComments;
+            var modalInstance = this.$uibModal.open({
+                animation: true,
+                templateUrl: 'app/gimpal/genericModal.html',
+                controller: 'genericModalCtr',
+                size: 'md',
+                resolve: {
+                    Title: () => { return 'Join Car'; },
+                    Body: () => { return joinCarModalString; }
+                }
+            });
 
-            // prevent ourselves from joining car repeatedly
-            if (this.myCarId === car_copy._id) {
-                console.log('Error: attempting to re-join car already joined');
-                return;
-            }
+            modalInstance.result.then(() => { // first callback is when modal is 'closed' (user clickes YES)
 
-            // do not set class properties until success callback
-            var myCarId = car_copy._id;
-            var myInfo = this.me._id; // add myself to riderIds array
-            car_copy.riderIds.push(myInfo);
+                if (car_copy.riderIds.length >= car_copy.seats) {
+                    console.log('Error: car is already at max capacity');
+                    return;
+                }
 
-            this.$http.put('/api/cars/' + car_copy._id, car_copy)
-            .then((response) => {
-                console.log('added self to car');
-                this.myCarId = car_copy._id;
-                this.getCars(); //update __v version number in car object by re-fetching from server
-            }, (error) => {
-                // TO DO: add modal popup for error message
-                console.log(error);
+                // prevent ourselves from joining car repeatedly
+                if (this.myCarId === car_copy._id) {
+                    console.log('Error: attempting to re-join car already joined');
+                    return;
+                }
+
+                // do not set class properties until success callback
+                var myCarId = car_copy._id;
+                var myInfo = this.me._id; // add myself to riderIds array
+                car_copy.riderIds.push(myInfo);
+
+                this.$http.put('/api/cars/' + car_copy._id, car_copy)
+                .then((response) => {
+                    console.log('added self to car');
+                    this.myCarId = car_copy._id;
+                    this.getCars(); //update __v version number in car object by re-fetching from server
+                }, (error) => {
+                    // TO DO: add modal popup for error message
+                    console.log(error);
+                });
+            }, (reason) => { // second callback is when modal is 'dismissed'
+                console.log(reason);
             });
         }
 
@@ -144,13 +165,29 @@
             var car_copy = angular.copy(this.cars[carIndex]);
             car_copy.active = false;
 
-            this.$http.put('/api/cars/' + car_copy._id, car_copy)
-            .then((response) => {
-                console.log('inactivated car');
-                this.getCars(); //update __v version number in car object by re-fetching from server
-            }, (error) => {
-                // TO DO: add modal popup for error message
-                console.log(error);
+            var modalInstance = this.$uibModal.open({
+                animation: true,
+                templateUrl: 'app/gimpal/genericModal.html',
+                controller: 'genericModalCtr',
+                size: 'md',
+                resolve: {
+                    Title: () => { return 'Depart and Start Driving'; },
+                    Body: () => { return 'New users will be prevented from joining your car. The Drive ' +
+                    'page will be activated. Do you wish to continue?'; }
+                }
+            });
+
+            modalInstance.result.then(() => { // first callback is when modal is 'closed'
+                this.$http.put('/api/cars/' + car_copy._id, car_copy)
+                .then((response) => {
+                    console.log('inactivated car');
+                    this.getCars(); //update __v version number in car object by re-fetching from server
+                }, (error) => {
+                    // TO DO: add modal popup for error message
+                    console.log(error);
+                });
+            }, (reason) => { // second callback is when modal is 'dismissed'
+                console.log(reason);
             });
         }
 
@@ -193,7 +230,7 @@
             for (var i = 0; i < this.cars.length; i++) {
                 var car = this.cars[i];
 
-                //check if I am a driverId
+                //check if I am a driver
                 if (car.driverId === this.me._id) {
                     this.myCarId = car._id;
                     this.userIsDriver = true;
