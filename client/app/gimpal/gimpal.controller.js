@@ -91,7 +91,7 @@
 
             modalInstance.result.then(() => {
                 this.$http.delete('/api/cars/' + car._id)
-                .then((response) => {
+                .then((response) => { // first callback is when modal is 'closed'
                     console.log('deleted car');
                     console.log(response);
                     this.getCars(); //update __v version number in car object by re-fetching from server
@@ -100,7 +100,7 @@
                 }, (error) => {
                     console.log(error);
                 });
-            }, (reason) => {
+            }, (reason) => { // second callback is when modal is 'dismissed'
                 console.log(reason);
             });
         }
