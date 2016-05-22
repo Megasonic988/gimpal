@@ -1,0 +1,72 @@
+<div class="container" ng-cloak ng-show="ctr.me.name && ctr.loaded">
+  <div ng-show="!ctr.myCarId">
+    <div class="alert alert-warning">
+      <strong>Error!</strong> You are not in any cars that are currently driving.
+      <br> Please use the Cars app to join or create a car.
+    </div>
+  </div>
+  <div ng-show="ctr.myCarId && ctr.userIsDriver">
+    <h3>You are a driver with {{ctr.myCar.riderIds.length}} other passengers.</h3>
+    <hr>
+    <h3>Passenger Information:</h3>
+    <table class="table table-bordered table-striped">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Address</th>
+          <th>Phone Number</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="rider in ctr.carRiders">
+          <td>{{rider.name}}</td>
+          <td>{{rider.address}}</td>
+          <td>{{rider.phone}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div ng-show="ctr.myCarId && !ctr.userIsDriver">
+    <h3>You are a rider with {{ctr.myCar.riderIds.length}} other passengers.</h3>
+    <hr>
+    <h3>Driver Information: </h3>
+    <table class="table table-bordered table-striped">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Address</th>
+          <th>Phone Number</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>{{ctr.driverInfo.name}}</td>
+          <td>{{ctr.driverInfo.address}}</td>
+          <td>{{ctr.driverInfo.phone}}</td>
+        </tr>
+      </tbody>
+    </table>
+    <hr>
+    <h3>Passenger Information:</h3>
+    <table class="table table-bordered table-striped">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Address</th>
+          <th>Phone Number</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="rider in ctr.carRiders">
+          <td>{{rider.name}}</td>
+          <td>{{rider.address}}</td>
+          <td>{{rider.phone}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <hr>
+  <div class="row">
+    <strong><p class="text-center">Last Updated: {{ctr.lastUpdated | date:'mediumTime'}}</p></strong>
+  </div>
+</div>
