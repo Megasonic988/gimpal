@@ -1,12 +1,46 @@
 <div class="container">
+  <h3>Cars</h3>
+  <table class="table table-bordered table-hover">
+    <thead>
+      <tr>
+        <th>Driver</th>
+        <th>Passengers</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="car in admin.cars">
+        <td>{{car.driver.name}}</th>
+          <td>
+            <ul class="list-group">
+              <li class="list-group-item" ng-repeat="rider in car.riders">
+                {{rider.name}}
+              </li>
+            </ul>
+          </td>
+          <td>
+            <button type="button" class="btn btn-danger" ng-click="deleteCar($index)">
+              Delete
+            </button>
+          </td>
+      </tr>
+    </tbody>
+  </table>
+  <hr>
+  <h3>Users</h3>
   <p>The delete user and user index api routes are restricted to users with the 'admin' role.</p>
   <ul class="list-group user-list">
     <li class="list-group-item" ng-repeat="user in admin.users">
-	    <div class="user-info">
-	        <strong>{{user.name}}</strong><br>
-	        <span class="text-muted">{{user.email}}</span>
-	    </div>
-        <a ng-click="admin.delete(user)" class="trash"><span class="fa fa-trash fa-2x"></span></a>
+      <div class="user-info">
+        <strong>{{user.name}}</strong>
+        <br>
+        <span class="text-muted">{{user.email}}</span>
+      </div>
+      <a ng-click="admin.delete(user)" class="trash"><span class="fa fa-trash fa-2x"></span></a>
     </li>
   </ul>
+  <hr>
+  <div class="row">
+    <strong><p class="text-center">Last Updated: {{admin.lastUpdated | date:'mediumTime'}}</p></strong>
+  </div>
 </div>
