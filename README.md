@@ -1,4 +1,8 @@
-# gimpal
+# Gimpal
+
+## Description
+
+Gimpal is a ride-sharing app designed to eliminate the need for cluttered group messages for figuring out rides. Drivers create "cars", and riders add themselves to these cars. Capacity, location, and timing constraints are respected. This app was made for the Edmonton Chinese Christian Church.
 
 This project was generated with the [Angular Full-Stack Generator](https://github.com/DaftMonk/generator-angular-fullstack) version 3.6.1.
 
